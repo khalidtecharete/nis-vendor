@@ -1,0 +1,42 @@
+{
+    "name": "innamhunzai/scout-aws-elasticsearch-driver",
+    "type": "library",
+    "description": "Laravel Scout Elasticsearch driver with AWS support",
+    "keywords": [
+        "laravel",
+        "scout",
+        "elasticsearch",
+        "search",
+        "aws"
+    ],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Innam Hunzai",
+            "email": "innam@techarete.com"
+        }
+    ],
+    "require": {
+        "php": "^7.4",
+        "laravel/scout": "^8.0",
+        "aws/aws-sdk-php": "^3.167.0",
+        "babenkoivan/scout-elasticsearch-driver": "^4.2.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "InnamHunzai\\ScoutAwsElastic\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "InnamHunzai\\ScoutAwsElastic\\ScoutAwsElasticServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true,
+    "config": {
+        "sort-packages": true
+    }
+}

@@ -1,0 +1,39 @@
+version: '3.7'
+
+services:
+  php:
+    image: babenkoivan/scout-elasticsearch-driver-php-cli:php7.3-laravel6
+    command: >
+      sh -c 'composer config --no-interaction repositories.driver "{\"type\":\"path\",\"url\":\"../driver\",\"options\":{\"symlink\":true}}" &&
+             composer require --no-interaction --prefer-dist babenkoivan/scout-elasticsearch-driver:@dev &&
+
+             check-connection mysql 3306 &&
+             check-connection elastic 9200 &&
+
+             php artisan vendor:publish --provider="Laravel\Scout\ScoutServiceProvider" &&
+             php artisan vendor:publish --provider="ScoutElastic\ScoutElasticServiceProvider" &&
+             php artisan migrate --no-interaction --seed &&
+
+             php -a'
+    volumes:
+      - .:/driver
+    depends_on:
+      - mysql
+      - elastic
+    stdin_open: true
+    environment:
+      DB_HOST: mysql
+      DB_DATABASE: app
+      DB_USERNAME: root
+      DB_PASSWORD: root
+      SCOUT_DRIVER: elastic
+      SCOUT_ELASTIC_HOST: elastic:9200
+  mysql:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: app
+  elastic:
+    image: elasticsearch:7.1.1
+    environment:
+      discovery.type: single-node
